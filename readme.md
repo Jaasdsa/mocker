@@ -8,7 +8,15 @@ protoc --go_out=protocols/demo --go_opt=paths=source_relative --go-grpc_out=prot
 
 # 1. 运行 grpc mocker 服务端代码
 
+```bash
+go run .
+```
+
 # 2. 运行 grpc mocker 客户端代码
+
+```bash
+go run client/client.go
+```
 
 - mocker 服务端已经实现动态类型 mocker
 - 不用每次生成桩代码，大大提高了灵活性
