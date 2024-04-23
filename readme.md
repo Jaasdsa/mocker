@@ -18,5 +18,5 @@ go run .
 go run client/client.go
 ```
 
-- mocker 服务端已经实现动态类型 mocker
-- 不用每次生成桩代码，大大提高了灵活性
+- mocker 服务端实现动态类型 mocker
+- 不用每次生成桩代码，提高灵活性

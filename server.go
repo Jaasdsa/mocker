@@ -19,6 +19,7 @@ import (
 	"github.com/jhump/protoreflect/dynamic"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
+	"google.golang.org/protobuf/types/known/anypb"
 )
 
 func main() {
@@ -107,8 +108,10 @@ func handleStream(srv interface{}, stream grpc.ServerStream) error {
 	if err := unmarshaler.Unmarshal(reader, res); err != nil {
 		log.Fatalf("Failed to unmarshal json data: %v", err)
 	}
-
-	if err := stream.SendMsg(res); err != nil {
+	body, _ := res.Marshal()
+	b := anypb.Any{}
+	b.Value = body
+	if err := stream.SendMsg(b); err != nil {
 		return status.Errorf(codes.Internal, "failed to send message: %s", err)
 	}
 	return nil
