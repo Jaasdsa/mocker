@@ -1,7 +1,6 @@
 
-€À
-
-demo.protoMedBaike"5
+îÃ
+MedBaike.protoMedBaike"5
 Address
 street (	Rstreet
 city (	Rcity"[
@@ -1050,7 +1049,9 @@ parameters
 DRUG_COST_FILTER_TYPE_CITY 
 DRUG_COST_FILTER_TYPE_COMMON
 DRUG_COST_FILTER_TYPE_TRADE$
- DRUG_COST_FILTER_TYPE_ENTERPRISE2Y
+ DRUG_COST_FILTER_TYPE_ENTERPRISE2ç
 
 DocServiceK
-GetDocDataInfo.MedBaike.GetDocDataInfoReq.MedBaike.GetDocDataInfoRespBZprotocols/MedBaikebproto3
+GetDocDataInfo.MedBaike.GetDocDataInfoReq.MedBaike.GetDocDataInfoResp2
+
+GetAddress.MedBaike.Address.MedBaike.AddressBZprotocols/MedBaikebproto3

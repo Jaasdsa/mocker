@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.1
-// source: demo.proto
+// source: MedBaike.proto
 
 package MedBaike
 
@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DocServiceClient interface {
 	GetDocDataInfo(ctx context.Context, in *GetDocDataInfoReq, opts ...grpc.CallOption) (*GetDocDataInfoResp, error)
+	GetAddress(ctx context.Context, in *Address, opts ...grpc.CallOption) (*Address, error)
 }
 
 type docServiceClient struct {
@@ -42,11 +43,21 @@ func (c *docServiceClient) GetDocDataInfo(ctx context.Context, in *GetDocDataInf
 	return out, nil
 }
 
+func (c *docServiceClient) GetAddress(ctx context.Context, in *Address, opts ...grpc.CallOption) (*Address, error) {
+	out := new(Address)
+	err := c.cc.Invoke(ctx, "/MedBaike.DocService/GetAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DocServiceServer is the server API for DocService service.
 // All implementations must embed UnimplementedDocServiceServer
 // for forward compatibility
 type DocServiceServer interface {
 	GetDocDataInfo(context.Context, *GetDocDataInfoReq) (*GetDocDataInfoResp, error)
+	GetAddress(context.Context, *Address) (*Address, error)
 	mustEmbedUnimplementedDocServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedDocServiceServer struct {
 
 func (UnimplementedDocServiceServer) GetDocDataInfo(context.Context, *GetDocDataInfoReq) (*GetDocDataInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDocDataInfo not implemented")
+}
+func (UnimplementedDocServiceServer) GetAddress(context.Context, *Address) (*Address, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAddress not implemented")
 }
 func (UnimplementedDocServiceServer) mustEmbedUnimplementedDocServiceServer() {}
 
@@ -88,6 +102,24 @@ func _DocService_GetDocDataInfo_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DocService_GetAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Address)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DocServiceServer).GetAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/MedBaike.DocService/GetAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DocServiceServer).GetAddress(ctx, req.(*Address))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DocService_ServiceDesc is the grpc.ServiceDesc for DocService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -99,7 +131,11 @@ var DocService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetDocDataInfo",
 			Handler:    _DocService_GetDocDataInfo_Handler,
 		},
+		{
+			MethodName: "GetAddress",
+			Handler:    _DocService_GetAddress_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "demo.proto",
+	Metadata: "MedBaike.proto",
 }

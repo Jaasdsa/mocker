@@ -4,7 +4,7 @@ protoc --go_out=. --descriptor_set_out=demo.pb demo.proto
 
 # 生成带有 service 的桩代码
 
-protoc --go_out=protocols/demo --go_opt=paths=source_relative --go-grpc_out=protocols/demo --go-grpc_opt=paths=source_relative --descriptor_set_out=demo.pb demo.proto
+protoc --go_out=protocols/MedBaike --go_opt=paths=source_relative --go-grpc_out=protocols/MedBaike --go-grpc_opt=paths=source_relative --descriptor_set_out=MedBaike.pb MedBaike.proto
 
 # 1. 运行 grpc mocker 服务端代码
 

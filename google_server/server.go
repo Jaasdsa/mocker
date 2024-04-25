@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 
@@ -19,7 +18,6 @@ import (
 	"github.com/jhump/protoreflect/dynamic"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 func main() {
@@ -110,15 +108,7 @@ func handleStream(srv interface{}, stream grpc.ServerStream) error {
 	// }
 	res.UnmarshalJSON([]byte(mockResStr))
 
-	resBytes, _ := res.Marshal()
-	f := &emptypb.Empty{}
-	proto.Unmarshal(resBytes, f)
-	b11, _ := proto.Marshal(f)
-	fmt.Println("len:", len(resBytes), len(b11))
-	fmt.Println(resBytes)
-	fmt.Println("-------")
-	fmt.Println(b11)
-	if err := stream.SendMsg(f); err != nil {
+	if err := stream.SendMsg(res); err != nil {
 		return status.Errorf(codes.Internal, "failed to send message: %s", err)
 	}
 	return nil

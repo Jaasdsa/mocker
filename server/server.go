@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net"
 
@@ -102,7 +101,7 @@ func handleStream(srv interface{}, stream grpc.ServerStream) error {
 	res := dynamic.NewMessage(method.GetOutputType())
 
 	// 根据 json 数据填入动态类型中
-	mockResStr := `{"data": {"tid": 256}}`
+	// mockResStr := `{"data": {"tid": 256}}`
 	// reader := strings.NewReader(mockResStr)
 	// unmarshaler := jsonpb.Unmarshaler{}
 	// if err := unmarshaler.Unmarshal(reader, res); err != nil {
@@ -113,11 +112,7 @@ func handleStream(srv interface{}, stream grpc.ServerStream) error {
 	resBytes, _ := res.Marshal()
 	f := &emptypb.Empty{}
 	proto.Unmarshal(resBytes, f)
-	b11, _ := proto.Marshal(f)
-	fmt.Println("len:", len(resBytes), len(b11))
-	fmt.Println(resBytes)
-	fmt.Println("-------")
-	fmt.Println(b11)
+
 	if err := stream.SendMsg(f); err != nil {
 		return status.Errorf(codes.Internal, "failed to send message: %s", err)
 	}

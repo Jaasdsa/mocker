@@ -1,0 +1,1283 @@
+syntax = "proto3";
+
+package MedBaike;
+option go_package = "protocols/MedBaike";
+
+message Address {
+  string street = 1;
+  string city = 2;
+}
+
+message Person {
+  string name = 1;
+  int32 age = 2;
+  Address address = 3;
+}
+
+message GetDocDataInfoReq {
+  string docid = 1;
+}
+
+message GetDocDataInfoResp {
+  Tid_DocData data = 1;      // 文章内容
+  int32 favorite = 2;        // 用户收藏
+  int32 helpful = 3;         // 用户点击有帮助
+  int32 helpfulCount = 4;    // 用户点击有帮助数量
+  int32 feedback = 5;        // 用户反馈
+  int32 pv = 6;              // pv
+  int32 show_full_text = 8;  // 展示全文，默认0为折叠，1展开
+}
+
+message TagObject {
+  int32 tid = 1;    // 二级分类id
+  string name = 2;  // 二级分类名
+}
+
+/*********************************************** tid 0
+ * ********************************************************/
+message Tid0_Review {
+  string doctor_id = 1;  // 医生ID
+  string text = 2;       // 组合好的审阅描述信息，用于展示
+  int32 clickable = 3;   // 0:不可点击;1:可点击
+}
+message Tid0_Video {
+  string docid = 1;    // 视频文章ID
+  string src = 2;      // 视频源
+  int32 duration = 3;  // 时长，单位是分钟
+  int32 timelen = 4;   // 时长，单位是秒
+  string image = 5;    // 视频截图
+}
+message Tid0_Reviews {
+  int32 drid = 1;                // 医生ID
+  int32 hpid = 2;                // 医院ID
+  string name = 3;               // 医生名字
+  string icon = 4;               // 医生头像
+  string position = 5;           // 职称
+  string hospital = 6;           // 医院名称
+  string department = 7;         // 科室
+  int32 doctor_clickable = 8;    // 0:不可点击;1:可点击
+  int32 hospital_clickable = 9;  // 0:不可点击;1:可点击
+  string text = 10;              // 组合好的审阅描述信息，用于展示
+  int32 weight = 11;             // 0:普通医生;2:顾问级专家
+  int32 sole = 12;  // 是否特约作者，默认为0表示不是特约作者，1表示是特约作者
+  string socialtitle = 13;  // 社会职称
+  string hprank = 14;       // 医院等级信息
+}
+message Tid0_DisVideo {
+  string src = 1;       // 视频源
+  int32 duration = 2;   // 时长，单位秒
+  int32 size = 3;       // 视频大小，单位KB
+  string image = 4;     // 图片
+  int32 direction = 5;  // 1:横屏;2:竖屏
+}
+message Tid0 {
+  int32 tid = 1;             // 模版ID
+  int32 isrc = 2;            // 0表示tencent;1表示healthwise;后续有的话再递增
+  string op_tname = 3;       // 模板目录名
+  string op_tname_icon = 4;  // 模版目录图标
+  string name = 5;           // 疾病名
+  repeated string op_alias = 6;
+  string image = 7;           // 疾病图片
+  Tid0_Review op_review = 8;  // 疾病审核信息
+  string op_icon = 9;         // 器官图片url
+  Tid0_Video op_video = 10;   // 视频信息
+  repeated string op_summarys = 11;
+  string md_definition = 12;     // 定义，markdown类型
+  string definition = 13;        // 定义
+  string op_quickoverview = 14;  // 秒懂
+  string thumb = 15;             // 缩略图url
+  repeated Tid0_Reviews reviews = 16;
+  string pinyin = 17;  // 拼音
+  repeated Tid0_DisVideo disvideo = 18;
+  string ename = 19;       // 疾病英文名
+  string updatetime = 20;  // 最后发布时间
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-0.png
+/*********************************************** tid 0
+ * ********************************************************/
+
+/*********************************************** tid 1
+ * ********************************************************/
+message Tid1_Data {
+  string icon = 1;     // 图标
+  string key_ = 2;     // key，JCE的成员变量名不能是key
+  int32 md_value = 3;  // value
+}
+message Tid1 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  repeated Tid1_Data data = 4;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-1.png
+/*********************************************** tid 1
+ * ********************************************************/
+
+/*********************************************** tid 2
+ * ********************************************************/
+message Tid2_Data {
+  string name = 1;      // 名称
+  int32 clickable = 2;  // 0:不可点击;1:可点击
+}
+message Tid2 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  repeated Tid2_Data data = 5;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-2.png
+/*********************************************** tid 2
+ * ********************************************************/
+
+/*********************************************** tid 4
+ * ********************************************************/
+message Tid4_Related {
+  string title = 1;  // 文章标题
+  string docid = 2;  // 文章ID
+}
+message Tid4_Doctor {
+  int32 drid = 1;                // 医生ID
+  int32 hpid = 2;                // 医院ID
+  string name = 3;               // 医生名字
+  string icon = 4;               // 医生头像
+  string position = 5;           // 职称
+  string hospital = 6;           // 医院名称
+  string department = 7;         // 科室
+  int32 doctor_clickable = 8;    // 0:不可点击;1:可点击
+  int32 hospital_clickable = 9;  // 0:不可点击;1:可点击
+  string text = 10;              // 组合好的审阅描述信息，用于展示
+  int32 weight = 11;             // 0:普通医生;2:顾问级专家
+  int32 follow = 12;             // 用户是否关注医生
+  int32 sole = 13;  // 是否特约作者，默认为0表示不是特约作者，1表示是特约作者
+  string hprank = 14;      // 医院等级信息
+  string prefix = 15;      // 前缀;例如:审核专家
+  int32 doctor_type = 16;  // 1-医生，2-患者；默认1
+}
+message Tid4_Hospital {
+  int32 hpid = 1;       // 医院ID
+  string name = 2;      // 医院名字
+  int32 clickable = 3;  // 0:不可点击;1:可点击
+  string icon = 4;      // 医院头像
+  string hprank = 5;    // 医院等级信息
+  string prefix = 6;    // 前缀;例如:审核专家
+  string info = 7;      // 医院名称信息
+}
+message Tid4_Author {
+  repeated Tid4_Doctor op_doctor = 1;
+  Tid4_Hospital op_hospital = 2;  // 医院背书信息
+}
+message Tid4_Review {
+  repeated Tid4_Doctor op_doctor = 1;
+  Tid4_Hospital op_hospital = 2;  // 医院背书信息
+}
+message Tid4_Info_Extra  // 慧用药字段
+{
+  string content_classify = 1;  // 内容分类
+  string medicine = 2;          // 药品名称
+  string indication = 3;        // 标签
+}
+message Tid_DiseaseItem {
+  string name = 1;  // 疾病名称
+}
+message Tid_Recruit {
+  repeated string disease = 1;
+  repeated string area = 2;
+  repeated string treatment = 3;
+  int32 state = 4;  // 招募状态(0:招募尚未开始;1:招募中;2:招募完成)
+  repeated string drug = 5;
+  string target = 6;  // 主要目标人群
+  string count = 7;   // 招募人数
+  repeated string hospital = 8;
+  string purpose = 9;  // 试验目的
+}
+message Tid_Thank {
+  int32 ctype = 1;  // 200:医生;201:医院
+  int32 id = 2;     // 医生/医院ID
+  string info = 3;  // 鸣谢正文(业务侧赋值;不通过Dcache获得)
+}
+message Tid4 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string op_pinyin = 4;      // 模版目录拼音
+  string title = 5;          // 标题
+  string op_image = 6;       // 缩略图
+  string md_text = 7;        // 摘要
+  string docid = 8;          // 文章ID
+  int32 clickable = 9;       // 0:不可点击;1:可点击
+  repeated Tid4_Related op_related = 10;
+  Tid4_Doctor op_doctor = 11;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 12;  // 医院背书信息
+  Tid4_Author op_author = 13;      // 作者信息
+  repeated string op_keyword = 14;
+  string source = 15;  // 文章来源
+  int32 istop = 16;    // 置顶标志位;1:置顶;2:置底(不通过Dcache获得)
+  int32 newflag = 17;  // 1:新
+  repeated Tid_DiseaseItem diseases = 18;
+  string releasetime = 19;  // 发布时间
+  repeated string op_thumbs = 20;
+  int32 op_sole = 21;   // 1:特约独家作者
+  int32 readflag = 22;  // 已读标志位;0--未读;1--已读(不通过Dcache获得)
+  int32 type = 23;  // 0:普通文章;1:患者故事;2:相关文章;4:热门文章(不通过Dcache获得)
+  string getdataurl = 24;  // 获取文章详情链接(第三方使用;不通过Dcache获得)
+  repeated string tags = 25;
+  int32 duration = 26;      // 时长，单位是秒
+  int32 size = 27;          // 音频大小，单位KB
+  string url = 28;          // 音频地址
+  int32 helpful = 29;       // 用户点击有帮助(患者文章列表返回;不通过Dcache获得)
+  int32 helpfulcount = 30;  // 总赞数(患者文章列表返回;不通过Dcache获得)
+  string paraid = 31;       // 段落id(不通过Dcache获得)
+  repeated Tid4_Doctor op_doctors = 32;
+  Tid_Recruit sole_recruit = 33;  // 临床招募信息
+  string front = 34;              // 封面图
+  string custitle = 35;           // 自定义标题
+  string cusimage = 36;           // 自定义图片
+  string wxdurl = 37;             // 微信文章URL
+  string stitle = 38;             // 短标题(不通过Dcache获得)
+  int64 browser_ts = 39;          // 浏览时间
+  repeated TagObject cid = 40;
+  Tid4_Review review = 41;
+  string image = 42;                // 图片
+  Tid4_Info_Extra info_extra = 43;  // 慧用药字段
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-4.png
+/*********************************************** tid 4
+ * ********************************************************/
+
+/*********************************************** tid 5
+ * ********************************************************/
+message Tid5 {
+  int32 tid = 1;       // 模版ID
+  string title = 2;    // 标题
+  string md_data = 3;  // 正文;markdown
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-5.png
+/*********************************************** tid 5
+ * ********************************************************/
+
+/*********************************************** tid 6
+ * ********************************************************/
+message Tid6 {
+  int32 tid = 1;                  // 模版ID
+  string title = 2;               // 标题
+  string abs = 3;                 // 摘要
+  string releasetime = 4;         // 发布时间
+  Tid4_Doctor op_doctor = 5;      // 医生背书信息
+  Tid4_Hospital op_hospital = 6;  // 医院背书信息(废弃;改使用op_doctors)
+  string source = 7;              // 文章来源
+  string md_text = 8;             // 正文
+  int32 op_class = 9;             // 9--疑问;10--传闻
+  repeated string op_keyword = 10;
+  repeated Tid_DiseaseItem diseases = 11;
+  Tid4_Author op_author = 12;  // 作者信息
+  int32 op_sole = 13;          // 1:特约独家作者
+  string op_copyright = 14;    // 版权信息
+  repeated string ref = 15;
+  repeated string ref_info = 16;
+  int32 sourceid =
+      17;  // 来源id;0表示自撰，1表示healthwise;2表示公众号，3表示webmd;4表示医生约稿，5表示外包约稿
+  string copyright_head = 18;  // 文章详情里面的头部版权展示，原创，授权转载，独家授权
+  repeated string recruit_diseases = 19;
+  repeated string recruit_area = 20;
+  int32 duration = 21;  // 时长，单位是秒
+  int32 size = 22;      // 音频大小，单位KB
+  string url = 23;      // 音频地址
+  repeated string related_docs = 24;
+  repeated Tid4_Doctor op_doctors = 25;
+  int32 info_type = 26;  // 0:常规资讯;1:深度资讯;2:前沿资讯
+  string image = 27;     // 背景图
+  repeated string recruit_treatment = 28;
+  Tid_Recruit sole_recruit = 29;  // 临床招募信息
+  string docid = 30;              // 文章ID
+  string summary_url = 31;        // 摘要图片url
+  int32 ctype = 32;               // 文章类型
+  repeated Tid_Thank thanks = 33;
+  Tid4_Info_Extra info_extra = 34;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-6.png
+/*********************************************** tid 6
+ * ********************************************************/
+
+/*********************************************** tid 7
+ * ********************************************************/
+message Tid7_ImageInfo {
+  string image = 1;    // 图片url
+  string title = 2;    // 标题
+  string md_text = 3;  // 正文
+}
+message Tid7 {
+  int32 tid = 1;     // 模版ID
+  string title = 2;  // 标题
+  repeated Tid7_ImageInfo list = 3;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-7.png
+/*********************************************** tid 7
+ * ********************************************************/
+
+/*********************************************** tid 9
+ * ********************************************************/
+message Tid9 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  repeated string images = 5;
+  string docid = 6;     // 文章ID
+  int32 clickable = 7;  // 0:不可点击;1:可点击
+  repeated Tid4_Related op_related = 8;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-9.png
+/*********************************************** tid 9
+ * ********************************************************/
+
+/*********************************************** tid 10
+ * ********************************************************/
+message Tid10 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string text = 5;           // 摘要
+  string image = 6;          // 缩略图
+  int32 duration = 7;        // 时长，单位秒
+  string docid = 8;          // 文章ID
+  repeated string op_keyword = 9;
+  int32 newflag = 10;  // 1:新
+  int32 istop = 11;    // 置顶标志位;1:置顶;2:置底(不通过Dcache获得)
+  string source = 12;  // 文章来源
+  repeated Tid_DiseaseItem diseases = 13;
+  Tid4_Doctor op_doctor = 14;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 15;  // 医院背书信息
+  int32 op_sole = 16;              // 1:特约独家作者
+  int32 readflag = 17;             // 已读标志位;0--未读;1--已读
+  string getdataurl = 18;          // 获取文章详情链接
+  string src = 19;                 // 视频源
+  repeated string tags = 20;
+  int32 helpful = 21;       // 用户点击有帮助(患者文章列表返回;不通过Dcache获得)
+  int32 helpfulcount = 22;  // 总赞数(患者文章列表返回;不通过Dcache获得)
+  int32 type = 23;          // 2:相关文章;4:热门文章(不通过Dcache获得)
+  string paraid = 24;       // 段落id(不通过Dcache获得)
+  repeated Tid4_Doctor op_doctors = 25;
+  string md_text = 26;    // 正文
+  string front = 27;      // 封面图
+  string custitle = 28;   // 自定义标题
+  string cusimage = 29;   // 自定义图片
+  string wxdurl = 30;     // 微信文章URL
+  int32 size = 31;        // 视频大小，单位KB
+  string stitle = 32;     // 短标题(不通过Dcache获得)
+  int64 browser_ts = 33;  // 浏览时间
+  int32 doctype = 34;     // 文章类型;8:视频;16:音频;18:直播
+  int32 direction = 35;   // 1:横屏;2:竖屏
+  repeated TagObject cid = 36;
+  string liveid = 37;  // 直播ID
+  int32 sourceid =
+      38;  // 来源id;0表示自撰，1表示healthwise;2表示公众号，3表示webmd;4表示医生约稿，5表示外包约稿
+  Tid4_Review review = 40;
+  string releasetime = 39;  // 发布时间
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-10.png
+/*********************************************** tid 10
+ * ********************************************************/
+
+/*********************************************** tid 11
+ * ********************************************************/
+message Tid11 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string text = 5;           // 正文
+  string image = 6;          // 图片
+  string docid = 7;          // 文章ID
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-11.png
+/*********************************************** tid 11
+ * ********************************************************/
+
+/*********************************************** tid 13
+ * ********************************************************/
+message Tid13 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string abs = 5;            // 摘要
+  string image = 6;          // 图片
+  string image_bg = 7;       // 背景图片
+  int32 jingpin = 8;         // 0:普通版;1:完整版;2:母词条
+  int32 type = 9;            // 疾病type
+  string docid = 10;         // 综述ID
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-13.png
+/*********************************************** tid 13
+ * ********************************************************/
+
+/*********************************************** tid 14
+ * ********************************************************/
+message Tid14 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string abs = 5;            // 摘要
+  string image = 6;          // 图片
+  string op_md_text = 7;     // 正文
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-14.png
+/*********************************************** tid 14
+ * ********************************************************/
+
+/*********************************************** tid 15
+ * ********************************************************/
+message Tid15_List {
+  string icon = 1;  // 图标
+  string name = 2;  // 名称
+}
+message Tid15 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string icon = 5;           // 标题图标
+  string text = 6;           // 正文
+  repeated Tid15_List list = 7;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-15.png
+/*********************************************** tid 15
+ * ********************************************************/
+
+/*********************************************** tid 16
+ * ********************************************************/
+message Tid16 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string icon = 5;           // 标题图标
+  string docid = 6;          // 文章ID
+  repeated string op_list = 7;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-16.png
+/*********************************************** tid 16
+ * ********************************************************/
+
+/*********************************************** tid 17
+ * ********************************************************/
+message Tid17 {
+  int32 tid = 1;             // 模版ID
+  string op_tname = 2;       // 模板目录名
+  string op_tname_icon = 3;  // 模版目录图标
+  string title = 4;          // 标题
+  string abs = 5;            // 摘要
+  string md_text = 6;        // 正文
+  int32 duration = 7;        // 时长，单位秒
+  string src = 8;            // 视频源
+  int32 size = 9;            // 视频大小，单位KB
+  repeated string op_keyword = 10;
+  repeated Tid_DiseaseItem diseases = 11;
+  Tid4_Doctor op_doctor = 12;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 13;  // 医院背书信息
+  string source = 14;              // 文章来源
+  int32 op_sole = 15;              // 1:特约独家作者
+  string op_copyright = 16;        // 版权信息
+  string image = 17;               // 图片
+  repeated string related_docs = 18;
+  repeated Tid4_Doctor op_doctors = 19;
+  string docid = 20;        // 文章ID
+  string desc = 21;         // 语音标题
+  int32 doctype = 22;       // 文章类型;8:视频;16:音频
+  string subjectname = 23;  // 专栏名称
+  int32 direction = 24;     // 1:横屏;2:竖屏
+  int32 sourceid =
+      25;  // 来源id;0表示自撰，1表示healthwise;2表示公众号，3表示webmd;4表示医生约稿，5表示外包约稿
+  string anti_theft_url = 26;  // vod 防盗链
+  string src_url = 27;         // vod 原始链接（永久链接）
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-17.png
+/*********************************************** tid 17
+ * ********************************************************/
+
+/*********************************************** tid 18
+ * ********************************************************/
+message Tid18_List {
+  string name = 1;  // 名称
+  int32 type = 2;   // 类型
+}
+message Tid18 {
+  int32 tid = 1;             // 模版ID
+  string op_hospital = 2;    // 医院名称
+  string department_cn = 3;  // 科室中文名
+  string department_en = 4;  // 科室英文名
+  string op_doctor = 5;      // 医生名
+  string op_position = 6;    // 医生职称
+  string op_icon = 7;        // 图标地址
+  string image = 8;          // 图片地址
+  repeated Tid18_List list = 9;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-18.png
+/*********************************************** tid 18
+ * ********************************************************/
+
+/*********************************************** tid 19
+ * ********************************************************/
+message Tid19_List {
+  string name = 1;    // 名称(病因、症状)
+  string pinyin = 2;  // 拼音(bingyin、zhengzhuang)
+  string icon = 3;    // 图标
+}
+message Tid19 {
+  int32 tid = 1;  // 模版ID
+  repeated Tid19_List list = 2;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-19.png
+/*********************************************** tid 19
+ * ********************************************************/
+
+/*********************************************** tid 20
+ * ********************************************************/
+message Tid20 {
+  int32 tid = 1;                  // 模版ID
+  string title = 2;               // 标题
+  Tid4_Doctor op_doctor = 3;      // 医生背书信息
+  Tid4_Hospital op_hospital = 4;  // 医院背书信息
+  string source = 5;              // 来源
+  string op_image = 6;            // 图片
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-20.png
+/*********************************************** tid 20
+ * ********************************************************/
+
+/*********************************************** tid 21
+ * ********************************************************/
+message Tid21_List {
+  int32 op_class = 1;  // 9--疑问;10--传闻
+  string title = 2;    // 标题
+  string md_text = 3;  // 正文
+}
+message Tid21 {
+  int32 tid = 1;                  // 模版ID
+  string title = 2;               // 标题
+  Tid4_Doctor op_doctor = 3;      // 医生背书信息
+  Tid4_Hospital op_hospital = 4;  // 医院背书信息
+  string source = 5;              // 来源
+  repeated Tid21_List list = 6;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-21.png
+/*********************************************** tid 21
+ * ********************************************************/
+
+/*********************************************** tid 22
+ * ********************************************************/
+message Tid22 {
+  int32 tid = 1;              // 模版ID
+  int32 isrc = 2;             // 0表示tencent;1表示healthwise;后续有的话再递增
+  string name = 3;            // 疾病名
+  Tid0_Review op_review = 4;  // 疾病审核信息
+  string md_definition = 5;   // 定义，markdown类型
+  string definition = 6;      // 定义
+  string image = 7;           // 背景图
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-22.png
+/*********************************************** tid 22
+ * ********************************************************/
+
+/*********************************************** tid 23
+ * ********************************************************/
+message Tid23_Modeone_List {
+  string title = 1;      // 急救名(心肺复苏)
+  string image = 2;      // 图片
+  string docid = 3;      // 文章ID
+  string desc = 4;       // 描述
+  string h5url = 5;      // h5跳转链接
+  string subscript = 6;  // 角标
+  string wxaurl = 7;     // 小程序跳转链接
+}
+message Tid23_Modeone {
+  string title = 1;  // 标题(日常必备)
+  repeated Tid23_Modeone_List list = 2;
+}
+message Tid23_Modetwo_List {
+  string title = 1;  // 急救名(喉咙卡刺)
+  string docid = 2;  // 文章ID
+}
+message Tid23_Modetwo {
+  string title = 1;  // 标题(家庭急救)
+  repeated Tid23_Modetwo_List list = 2;
+}
+message Tid23_Modetop {
+  string image = 1;  // 图片
+  string docid = 2;  // 文章ID
+}
+message Tid23 {
+  int32 tid = 1;  // 模版ID
+  repeated Tid23_Modeone mode_one = 2;
+  repeated Tid23_Modetwo mode_two = 3;
+  repeated Tid23_Modetop mode_top = 4;
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-23.png
+/*********************************************** tid 23
+ * ********************************************************/
+
+/*********************************************** tid 24
+ * ********************************************************/
+message Tid24_Data {
+  string title = 1;  // 标题(溺水自救)
+  string image = 2;  // 标题背景
+  int32 type = 3;    // 0:无样式;1:有编号
+  repeated string md_text = 4;
+}
+message Tid24 {
+  int32 tid = 1;                  // 模版ID
+  string title = 2;               // 标题
+  string abs = 3;                 // 摘要
+  string releasetime = 4;         // 发布时间
+  Tid4_Doctor op_doctor = 5;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 6;  // 医院背书信息
+  Tid4_Author op_author = 7;      // 作者信息
+  string source = 8;              // 文章来源
+  repeated Tid24_Data data = 9;
+  int32 duration = 10;  // 时长，单位是秒
+  int32 size = 11;      // 音频大小，单位KB
+  string url = 12;      // 音频地址
+  repeated Tid_DiseaseItem diseases = 13;
+  repeated string related_docs = 14;
+  repeated Tid4_Doctor op_doctors = 15;
+  string docid = 16;  // 文章ID
+  int32 sourceid =
+      17;  // 来源id;0表示自撰，1表示healthwise;2表示公众号，3表示webmd;4表示医生约稿，5表示外包约稿
+  Tid4_Author author = 18;  // 作者信息
+}
+// demo: http://public-30017.sz.gfp.tencent-cloud.com/tid-24.png
+/*********************************************** tid 24
+ * ********************************************************/
+
+/*********************************************** tid 25
+ * ********************************************************/
+message Tid25 {
+  int32 tid = 1;              // 模版ID
+  string title = 2;           // 标题
+  string md_text = 3;         // 正文
+  string docid = 4;           // 文章ID
+  int32 clickable = 5;        // 0:不可点击;1:可点击
+  Tid4_Author op_author = 6;  // 作者信息
+  string source = 7;          // 文章来源
+  repeated string op_keyword = 8;
+  repeated Tid_DiseaseItem diseases = 9;
+  string releasetime = 10;  // 发布时间
+  int32 readflag = 11;      // 已读标志位;0--未读;1--已读
+  string searchtitle = 12;  // 搜索框标题(不通过Dcache获得;为空表示后面没有搜索框)
+  string getdataurl = 13;   // 获取文章详情链接
+  int32 duration = 14;      // 时长，单位是秒
+  int32 size = 15;          // 音频大小，单位KB
+  string url = 16;          // 音频地址
+  int32 helpful = 17;       // 用户点击有帮助(患者文章列表返回;不通过Dcache获得)
+  int32 helpfulcount = 18;  // 总赞数(患者文章列表返回;不通过Dcache获得)
+  int32 type = 19;          // 2:相关文章;4:热门文章(不通过Dcache获得)
+  int32 istop = 20;         // 置顶标志位;1:置顶;2:置底(不通过Dcache获得)
+  string paraid = 21;       // 段落id(不通过Dcache获得)
+  Tid4_Doctor op_doctor = 22;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 23;  // 医院背书信息
+  repeated Tid4_Doctor op_doctors = 24;
+  repeated string hometags = 25;
+  string image = 26;      // 缩略图
+  string front = 27;      // 封面图
+  string custitle = 28;   // 自定义标题
+  string cusimage = 29;   // 自定义图片
+  string wxdurl = 30;     // 微信文章URL
+  int64 browser_ts = 31;  // 浏览时间
+  repeated TagObject cid = 32;
+  Tid4_Review review = 33;
+}
+/*********************************************** tid 25
+ * ********************************************************/
+
+/*********************************************** tid 26
+ * ********************************************************/
+message Tid26_Info {
+  string md_text = 1;         // 正文
+  Tid4_Author op_author = 2;  // 作者信息
+  string source = 3;          // 文章来源
+  string time = 4;            // 时间
+  repeated Tid4 op_relateddoc = 5;
+}
+message Tid26 {
+  int32 tid = 1;              // 模版ID
+  string title = 2;           // 标题
+  string abs = 3;             // 摘要
+  string releasetime = 4;     // 发布时间
+  Tid4_Author op_author = 5;  // 作者信息
+  string source = 6;          // 文章来源
+  repeated string op_keyword = 7;
+  repeated Tid_DiseaseItem diseases = 8;
+  repeated Tid26_Info info = 9;
+  int32 duration = 10;  // 时长，单位是秒
+  int32 size = 11;      // 音频大小，单位KB
+  string url = 12;      // 音频地址
+  repeated string related_docs = 13;
+  Tid4_Doctor op_doctor = 14;      // 医生背书信息(废弃;改使用op_doctors)
+  Tid4_Hospital op_hospital = 15;  // 医院背书信息
+  repeated string ref = 16;
+  repeated string ref_info = 17;
+  repeated Tid4_Doctor op_doctors = 18;
+  int32 sourceid =
+      19;  // 来源id;0表示自撰，1表示healthwise;2表示公众号，3表示webmd;4表示医生约稿，5表示外包约稿
+  string docid = 20;  // 文章ID
+  repeated Tid_Thank thanks = 21;
+}
+/*********************************************** tid 26
+ * ********************************************************/
+
+/*********************************************** tid 27
+ * ********************************************************/
+message Tid27 {
+  int32 tid = 1;           // 模版ID
+  int64 postid = 2;        // 帖子ID
+  string title = 3;        // 标题
+  string abs = 4;          // 摘要
+  string create_time = 5;  // 创建时间
+  repeated string op_keyword = 6;
+  repeated Tid4_Doctor op_doctors = 7;
+  string theme = 8;    // 主题
+  string content = 9;  // 内容
+  repeated string op_thumbs = 10;
+  int32 did = 11;   // 所属疾病;默认乳腺癌
+  int32 type = 12;  // 1:帖子2：评论3:提问4:回答5:回复6:寻友7:活动8:公告9:留言板
+}
+/*********************************************** tid 27
+ * ********************************************************/
+
+/*********************************************** tid docinfo
+ * ********************************************************/
+message Tid_DocInfo {
+  int32 tid = 1;    // 4:数据在tid4中;10:数据在tid10中;25:数据在tid25中
+  Tid4 tid4 = 2;    // 文章
+  Tid10 tid10 = 3;  // 视频
+  Tid25 tid25 = 4;  // 问答
+  Tid27 tid27 = 5;  // 社区帖子
+}
+/*********************************************** tid docinfo
+ * ********************************************************/
+
+/*********************************************** tid docdata
+ * ********************************************************/
+message Tid_DocData {
+  int32 tid = 1;  // 6:数据在tid6中;17:数据在tid17中;24:数据在tid24中;26:数据在tid26中
+  Tid6 tid6 = 2;    // 文章数据
+  Tid17 tid17 = 3;  // 视频数据
+  Tid24 tid24 = 4;  // 急救数据
+  Tid26 tid26 = 5;  // 问答数据
+}
+/*********************************************** tid docdata
+ * ********************************************************/
+
+/*********************************************** 新版文章信息
+ * ********************************************************/
+message DocInfoV2 {
+  string docid = 1;       // 文章ID
+  int32 doctype = 2;      // 文章类型;1:文章;8:视频;11:问答;16:音频
+  string title = 3;       // 标题
+  string image = 4;       // 缩略图
+  string abs = 5;         // 摘要
+  string authorname = 6;  // 作者名称
+  int32 duration = 7;     // 时长，单位是秒
+  string h5url = 8;       // h5跳转链接
+  string wxaurl = 9;      // 小程序跳转链接
+}
+/*********************************************** 新版文章信息
+ * ********************************************************/
+
+message QuestionItem {
+  string disease = 1;   // 疾病名
+  string question = 2;  // 问答标题
+  string entry = 3;     // 问答所属的tab名，跳转到综述页对应tab
+  string tab = 4;       // tab名称
+}
+
+message DiseaseItem {
+  string name = 1;  // 疾病名
+  repeated string alias = 2;
+  int32 released = 3;  // 疾病是否已发布;0:建设中;1:已发布
+  repeated string symptoms = 4;
+  int32 type = 5;  // 疾病类型;0:普通页;1:精品页;2:母词条;3:症状;4:肿瘤页;5:新版肿瘤页
+  string distype = 6;  // 种类
+  repeated string disdepart = 7;
+  string disbody = 8;  // 部位
+  string summary = 9;  // 疾病/症状摘要
+  int32 source = 10;   // 来源;0:企鹅医典;1:hw
+  repeated QuestionItem tabs = 11;
+  int32 matchflag = 12;  // 0:部分命中;1:全命中
+  int32 did = 13;        // 疾病ID
+  int32 follow = 14;     // 0:未关注;1:已关注
+  int32 ctype = 15;      // 疾病类型;0:疾病;5:母词条;10:症状;20:药品
+  string docid = 16;     // 疾病综述ID
+  string ename = 17;     // 疾病英文名
+  string h5url = 18;     // h5跳转链接
+  string wxaurl = 19;    // 小程序跳转链接
+}
+
+message EmergencyItem {
+  string title = 1;  // 急救名
+  string docid = 2;  // 急救文档id
+}
+
+enum IGNORE_TYPE {
+  IGNORE_TYPE_DISEASE_TAG = 0;     // 疾病feed标签
+  IGNORE_TYPE_HOME_EMERGENCY = 1;  // 首页急救标签(例如: tag = "食物中毒")
+  IGNORE_TYPE_HOME_DISEASE = 2;    // 首页疾病标签(例如: disease = "流行性感冒")
+}
+
+enum CONTENT_TYPE {
+  CONTENT_TYPE_DEFAULT = 0;          // 默认值
+  CONTENT_TYPE_RECOMMEND = 1;        // 首页推荐
+  CONTENT_TYPE_DOCS_TAGS = 2;        // 首页文章标签
+  CONTENT_TYPE_DOCS = 3;             // 首页文章
+  CONTENT_TYPE_VIDEOS = 4;           // 首页视频
+  CONTENT_TYPE_TOOLS = 5;            // 首页小工具
+  CONTENT_TYPE_TOPICS = 6;           // 首页专题
+  CONTENT_TYPE_HOME_TAGS = 7;        // 首页标签
+  CONTENT_TYPE_RECOMMENDV2 = 8;      // 首页推荐V2
+  CONTENT_TYPE_QAS = 9;              // 首页问答
+  CONTENT_TYPE_QAS_TAGS = 10;        // 首页问答标签
+  CONTENT_TYPE_RECOMMEND_TAGS = 11;  // 推荐健康主题
+  CONTENT_TYPE_DOCTOR = 12;          // 首页医生
+  CONTENT_TYPE_DISEASE = 13;         // 首页疾病
+  CONTENT_TYPE_BANNER = 14;          // 首页运营位
+  CONTENT_TYPE_EMERGENCY = 15;       // 首页急救
+  CONTENT_TYPE_SEARCH = 16;          // 首页搜索框
+}
+
+message GetOverviewFilterDesc {
+  string desc = 1;   // 筛选器描述
+  string docid = 2;  // 文章id
+  string h5url = 3;  // h5链接
+}
+
+message GetDiseaseListByCategoryRespListDiseases {
+  string name = 1;  // 疾病名称/症状名称
+  int32 type = 2;  // 疾病类型;0:普通页;1:精品页;2:母词条;3:症状;4:肿瘤页;5:新版肿瘤页
+  int32 released = 3;  // 疾病是否已发布;0:建设中;1:已发布
+  repeated string discategorys = 4;
+  int32 source = 5;   // 来源;0:企鹅医典;1:hw
+  string docid = 6;   // 综述ID
+  string h5url = 7;   // h5跳转链接
+  string wxaurl = 8;  // 小程序跳转链接
+}
+message GetDiseaseListByCategoryRespList {
+  string name = 1;             // tag名称：慢性病、急性病、A-Z
+  string op_icon_focus = 2;    // 选中tag展示icon
+  string op_icon_unfocus = 3;  // 未选中tag展示icon
+  repeated GetDiseaseListByCategoryRespListDiseases diseases = 4;
+  int32 released = 5;  // 疾病是否均发布：0--包含建设中疾病;1--已发布
+}
+
+message GetDrugListByCategoryRespListDrugs {
+  string name = 1;  // 疾病名称/症状名称
+  int32 type = 2;  // 疾病类型;0:普通页;1:精品页;2:母词条;3:症状;4:肿瘤页;5:新版肿瘤页
+  int32 released = 3;  // 疾病是否已发布;0:建设中;1:已发布
+  repeated string discategorys = 4;
+  string docid = 5;   // 疾病综述ID
+  string ename = 6;   // 疾病英文名
+  string h5url = 7;   // h5跳转链接
+  string wxaurl = 8;  // 小程序跳转链接
+}
+message GetDrugListByCategoryRespList {
+  string name = 1;  // tag名称;A-Z
+  repeated GetDrugListByCategoryRespListDrugs drugs = 2;
+}
+
+message TagTreeInfo {
+  string id = 1;        // ID
+  string title = 2;     // 标题
+  string descinfo = 3;  // 简介文案
+  string img_url = 4;   // 背景图
+  string h5url = 5;     // h5跳转链接
+  string wxaurl = 6;    // 小程序跳转链接
+}
+message GetDiseaseAllDocsTagsChildren {
+  string name = 1;           // 标签名(展示)
+  string tag = 2;            // 标签名(检索)
+  TagTreeInfo treeinfo = 3;  // 标签树信息
+}
+message GetDiseaseAllDocsTagsItem {
+  string name = 1;           // 标签名(展示)
+  string tag = 2;            // 标签名(检索)
+  int32 count = 3;           // 文章数量
+  int32 hot = 4;             // 1:热点分类
+  TagTreeInfo treeinfo = 5;  // 标签树信息
+  repeated GetDiseaseAllDocsTagsChildren tags = 6;
+  int32 follow = 7;  // 1:已关注(轻量版)
+  string image = 8;  // icon(轻量版)
+}
+
+message GetDiseaseAllDocsBaseInfoRespTags {
+  string title = 1;  // 分类
+  repeated GetDiseaseAllDocsTagsItem tags = 2;
+  int32 pv = 3;  // 用户pv
+}
+
+message NodeTagInfo {
+  string name = 1;      // 疾病名称
+  string tid = 2;       // 标签ID
+  string tag_name = 3;  // 标签名
+  string img_url = 4;   // 背景图
+  int32 type =
+      5;  // 疾病类型;0:普通页;1:精品页;2:母词条;3:症状;4:目录版肿瘤页;5:卡片版肿瘤页;6:流程版肿瘤页;7:直达版肿瘤页;8:决策版肿瘤页
+}
+
+// sort
+message GetHomeContentDataRespTopicSort {
+  CONTENT_TYPE type = 1;  // 类型
+  int32 offset = 2;       // 相对位移
+}
+message DrugCostItem {
+  string disease = 1;        // 疾病
+  string city = 2;           // 所在城市
+  string trade_name = 3;     // 商品名
+  string common_name = 4;    // 通用名
+  string dosage_forms = 5;   // 剂型
+  string specification = 6;  // 规格
+  string enterprise = 7;     // 生产企业
+  int32 price = 8;           // 价格(单位分)
+  string price_type = 9;     // 价格类型;例如:采购价，挂牌价，成交价
+  int32 insured = 10;        // 是否医保;0:不是医保;1:是医保
+}
+message DrugCost {
+  string common_name = 1;  // 药品名
+  int32 insured = 2;       // 是否医保;0:不是医保;1:是医保
+  int32 price_max = 3;     // 最高价格(单位分)
+  repeated DrugCostItem item = 4;
+}
+message ActiveItemQualitySort {
+  string text = 1;   // 活动文字
+  int32 hwflag = 2;  // 置顶标志位
+  int32 index = 3;   // 置顶时间戳
+  int32 id = 4;      // 时间戳
+}
+
+// mysql
+message PopupData {
+  string image = 1;        // 弹窗图片地址
+  string redirectUrl = 2;  // 跳转页面的地址
+}
+
+enum DISEASE_COST_FILTER_TYPE {
+  DISEASE_COST_FILTER_TYPE_CITY = 0;           // 城市
+  DISEASE_COST_FILTER_TYPE_INSURETYPE = 1;     // 医保类型
+  DISEASE_COST_FILTER_TYPE_INSUREPERSON = 2;   // 参保人员
+  DISEASE_COST_FILTER_TYPE_HOSPITALGRADE = 3;  // 医疗机构等级
+}
+
+enum DRUG_COST_FILTER_TYPE {
+  DRUG_COST_FILTER_TYPE_DEFAULT = 0;     // 默认值
+  DRUG_COST_FILTER_TYPE_DISEASE = 1;     // 疾病
+  DRUG_COST_FILTER_TYPE_CITY = 2;        // 城市
+  DRUG_COST_FILTER_TYPE_COMMON = 3;      // 药品名
+  DRUG_COST_FILTER_TYPE_TRADE = 4;       // 商品名
+  DRUG_COST_FILTER_TYPE_ENTERPRISE = 5;  // 厂商
+}
+
+message DiseaseCostEntity {
+  string disease = 1;          // 疾病
+  string city = 2;             // 所在城市
+  int32 chemo_cost_min = 3;    // 化疗总费用(最小值;单位0.1万元)
+  int32 chemo_cost_max = 4;    // 化疗总费用(最大值;单位0.1万元)
+  int32 surg_cost_min = 5;     // 手术总费用(最小值;单位0.1万元)
+  int32 surg_cost_max = 6;     // 手术总费用(最大值;单位0.1万元)
+  int32 radio_cost_min = 7;    // 放疗总费用(最小值;单位0.1万元)
+  int32 radio_cost_max = 8;    // 放疗总费用(最大值;单位0.1万元)
+  int32 target_cost_min = 9;   // 靶向治疗总费用(最小值;单位0.1万元)
+  int32 target_cost_max = 10;  // 靶向治疗总费用(最大值;单位0.1万元)
+  int32 other_cost_min = 11;   // 其它治疗总费用(最小值;单位0.1万元)
+  int32 other_cost_max = 12;   // 其它治疗总费用(最大值;单位0.1万元)
+  int32 total_cost_min = 13;   // 总费用(最小值;单位0.1万元)
+  int32 total_cost_max = 14;   // 总费用(最大值;单位0.1万元)
+  int32 endoc_cost_min = 15;   // 内分泌治疗总费用(最小值;单位0.1万元)
+  int32 endoc_cost_max = 16;   // 内分泌治疗总费用(最大值;单位0.1万元)
+  int32 chemo_avg_cost = 17;   // 化疗单次费用(单位0.1万元)
+  int32 surg_avg_cost = 18;    // 手术单次费用(单位0.1万元)
+  int32 radio_avg_cost = 19;   // 传统放疗单次费用(单位0.1万元)
+  int32 radiox_avg_cost = 20;  // 伽马刀放疗单次费用(单位0.1万元)
+  int32 target_avg_cost = 21;  // 靶向治疗单次费用(单位0.1万元)
+  int32 endoc_avg_cost = 22;   // 内分泌治疗单次费用(单位0.1万元)
+}
+
+message FeedbackSuggest {
+  string contact = 1;  // 联系方式
+  string suggest = 2;  // 建议
+  string more = 3;     // 更多
+}
+
+message UploadSearchResultFeedBackEntity {
+  string query = 1;              // 搜索关键字
+  string tabname = 2;            // tab
+  string type = 3;               // 类型
+  string docid = 4;              // 文章id
+  string summary = 5;            // 摘要
+  string location = 6;           // 排序位置
+  string sortrule = 7;           // 排序规则
+  FeedbackSuggest feedback = 8;  // 反馈内容
+}
+
+message AuthPartnerDocsV2Entity {
+  string appid = 1;      // 合作方ID
+  string tag = 2;        // 授权的文章标签
+  int32 autoUpdate = 3;  // 是否授权标签下所有的文章并自动包含新增文章
+  repeated string docids = 4;
+}
+
+message AuthDocsInfoV2 {
+  string tag = 1;        // 授权的文章标签
+  int32 autoUpdate = 2;  // 是否授权标签下所有的文章并自动包含新增文章
+  repeated string docids = 3;
+}
+
+message GetAuthPartnerDocsV2Entity {
+  repeated AuthDocsInfoV2 tags = 1;
+}
+
+message ExamDetail {
+  string target = 1;  // 项目名称
+  string value = 2;   // 结果
+  int32 type = 3;  //-1未识别0:正常1:大于2:小于3:不等于4:等于5:小于等于6:大于等于
+  string unit = 4;       // 单位
+  string reference = 5;  // 参开范围
+  string detail = 6;     // 指标描述
+  repeated DiseaseItem related_diseases = 7;
+  string result = 8;  // 异常结果
+  string docid = 9;   // 项目/指标docid
+}
+
+message ExamReport {
+  int64 report_id = 1;      // 报告ID
+  string examine_name = 2;  // 检查项
+  string age = 3;
+  int32 gender = 4;        // 1:男2:女3:新生儿
+  int64 create_ts = 5;     // 创建时间戳(秒)
+  string create_date = 6;  // 创建日期
+  repeated ExamDetail exam_details = 7;
+  string pic_url = 8;  // 报告图片链接
+  string docid = 9;    // 检查项docid
+  int32 status = 10;   // 0:临时报告1:已保存
+}
+
+message DrcmRequest {
+  string docid = 1;      // docidoforglandingpageforrcm.
+  string uin = 2;        // uniquserid.
+  string search_id = 3;  // search_idforcurrentsearch.
+  string group_id = 4;   // abtestgroupid.
+}
+
+message DrcmReply {
+  repeated string rcmdocs = 1;
+}
+
+message DrcmReq {
+  string request_id = 1;  // 请求ID
+  string channel_id = 2;  // 场景ID
+  string doc_id = 3;      // 文章ID
+  string user_id = 4;     // 用户ID
+  int32 doc_num = 5;      // 请求数量
+  int32 offset = 6;       // 请求偏移量
+}
+
+message RcmDoc {
+  string doc_id = 1;  // 文章ID
+  int32 ctype = 2;    // 文章类型
+  string source = 3;  // 文章来源
+}
+
+message DrcmResp {
+  int32 ret_code = 1;
+  string ret_msg = 2;
+  repeated RcmDoc docs = 3;  // 相关文章列表，已排序
+}
+
+message QueryJkNewsInfo {
+  int32 version = 1;      // 版本;每更新一次加1
+  string eventid = 2;     // 事件ID
+  string event = 3;       // 事件名
+  string city = 4;        // 城市名
+  int32 heat = 5;         // 热度
+  int32 position = 6;     // 排序位置
+  string eventlevel = 7;  // 等级;S+/S/A/B/C
+  string province = 8;    // 省份名
+}
+
+message QueryJkNewsContent {
+  string eventid = 1;                // 事件ID
+  string event = 2;                  // 事件名
+  string main_cms_id = 3;            // 展现的企鹅号文章ID
+  string main_cms_title = 4;         // 展现的企鹅号文章标题
+  string main_cms_content = 5;       // 展现的企鹅号内容
+  string main_cms_icon = 6;          // 展现的企鹅号头像
+  string main_cms_name = 7;          // 展现的企鹅号作者
+  int32 main_cms_pubtime = 8;        // 展现的企鹅号发布时间
+  string citiao = 9;                 // 词条名
+  string citiao_relate_docids = 10;  // 词条下的相关文章docid，分号隔开
+  int32 read_num = 11;               // 阅读量
+  string relate_cms_ids = 12;        // 延展阅读;格式:[{cms_id;title;img_url;media_name}]
+}
+
+message QueryJkHotEventInfo {
+  string main_cms_id = 1;      // 展现的企鹅号文章ID
+  string main_cms_title = 2;   // 展现的企鹅号文章标题
+  string main_cms_name = 3;    // 展现的企鹅号作者
+  int32 main_cms_pubtime = 4;  // 展现的企鹅号发布时间
+  string main_cms_url = 5;     // 展现的落地页url
+  string main_cms_image = 6;   // 展现的企鹅号文章缩略图
+}
+
+message GetUinByOpenidReq {
+  string openid = 1;  // 用户openid
+}
+message GetUinByOpenidResp {
+  int64 uin = 1;  // 用户UIN
+}
+
+message CCCheckTokenReq {
+  string token = 1;  // 用户token
+}
+message CCCheckTokenResp {
+  int64 uin = 1;  // 用户UIN
+}
+
+message GetMyCommunityListInfo {
+  int64 cid = 1;         // 所属圈子ID
+  string name = 2;       // 圈子名
+  string pic = 3;        // 圈子图片
+  string share_pic = 4;  // 分享图片
+}
+
+message GetMyCommunityListReq {
+  int32 offset = 1;
+  int32 count = 2;
+}
+
+message GetMyCommunityListResp {
+  int32 error_code = 1;
+  string error_msg = 2;
+  string toast_msg = 3;
+  repeated GetMyCommunityListInfo community_list = 4;
+}
+
+message QueryUserPosInfo {
+  int32 id = 1;               // ID
+  int64 uin = 2;              // 用户UIN
+  string user_image = 3;      // 用户上传图片
+  int32 gender = 4;           // 性别;1:man;0:woman
+  int32 age = 5;              // 年龄;0:10-16岁;1:>16岁
+  int32 rate = 6;             // 评分
+  string pose_desc = 7;       // 评语
+  string comments = 8;        // 描述
+  int32 head_rate = 9;        // 头部评分
+  string head_desc = 10;      // 头部评语
+  int32 shoulder_rate = 11;   // 肩部评分
+  string shoulder_desc = 12;  // 肩部评语
+  int32 leg_rate = 13;        // 腿部评分
+  string leg_desc = 14;       // 腿部评语
+  string image = 15;          // 图片
+  int32 update_time = 16;     // 更新时间
+}
+
+message QueryUserFollowing {
+  string name = 1;        // 订阅的名称
+  int32 update_time = 2;  // 更新时间
+}
+
+message BatchDoUserDocRelationReq {
+  string appid = 1;
+  string biz_name = 2;
+  repeated int64 uins = 3;
+  repeated string docs = 4;
+  int32 operate_type = 5;             // 操作类型，0取消，1添加
+  int32 nosave_userlist = 6;          // 是否存单Doc的用户列表，0-需要，1-不需要
+  map<string, uint32> data_time = 7;  // 数据时间，不传为当前时间
+  int32 expire_time = 8;              // 过期时间，0不设置过期
+}
+
+message GetUserDocRelationReq {
+  string appid = 1;
+  string biz_name = 2;
+  int64 uin = 3;  // 用户ID
+}
+
+message GetDocRelationUsersReq {
+  string appid = 1;
+  string biz_name = 2;
+  string doc = 3;
+  int32 offset = 4;
+  int32 count = 5;
+}
+
+message UserDocRelationItem {
+  int64 uin = 1;  // 用户ID
+  string doc = 2;
+  int32 create_time = 3;
+}
+message GetUserDocRelationResp {
+  int32 error_code = 1;
+  string error_msg = 2;
+  repeated UserDocRelationItem list = 3;
+}
+
+message GetDocsRelationCountReq {
+  string appid = 1;
+  string biz_name = 2;
+  repeated string docs = 3;
+  int32 offset = 4;
+  int32 count = 5;
+}
+
+message GetDocsRelationCountResp {
+  int32 error_code = 1;
+  string error_msg = 2;
+  map<string, int32> docs_relation_count = 3;
+}
+
+// RpcManager
+message PushToUserReq {
+  string event_name = 1;  // 卡片对应的eventName
+  string effective_time =
+      2;  // 事件的生效时间，如酒店入住时间，UTC时区，精确到毫秒，格式:yyyymmddhhmmssSSS.eventName存在时必选，生效日期不能早于发送事件通知当天
+  string expire_time =
+      3;  // 事件的失效时间，超过该时间后，事件不再通知用户，UTC时区，精确到毫秒，格式:yyyymmddhhmmssSSS.eventName存在时必选
+  string parameters = 4;  // 卡片对应的paraeters
+  string open_id = 5;     // 华为快应用用户openid
+}
+message PushToUserResp {
+  string code = 1;         // 调用华为服务出错时返回的结果类型，参考https:
+  string description = 2;  // 调用华为服务出错时返回的错误详情，参考https:
+}
+
+message BatchGetESResultReq {
+  repeated string queries = 1;
+  string sort = 2;
+}
+
+message SDocEsIndexItem {
+  string docid = 1;
+  int32 type = 2;
+}
+message QueryResult {
+  string query = 1;
+  repeated SDocEsIndexItem result = 2;
+}
+message BatchGetESResultResp {
+  repeated QueryResult list = 1;
+}
+
+message MoniterLogReport {
+  string log_name = 1;
+  string from = 2;
+  string to = 3;
+  string function_name = 4;
+  int32 cnt = 5;
+  float cost = 6;
+  int32 ret_code = 7;
+}
+
+service DocService {
+  rpc GetDocDataInfo(GetDocDataInfoReq) returns (GetDocDataInfoResp);
+  rpc GetAddress(Address) returns (Address);
+}

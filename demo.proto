@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package demo;
-option go_package = "protocols/demo";
+package MedBaike;
+option go_package = "protocols/MedBaike";
 
 message Address {
     string street = 1;
@@ -1349,6 +1349,6 @@ message MoniterLogReport
     int32 ret_code = 7;
 }
 
-service DocInfoService {
+service DocService {
     rpc GetDocDataInfo  (GetDocDataInfoReq)  returns  (GetDocDataInfoResp);
 }

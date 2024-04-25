@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "mocker/protocols/MedBaike"
+	pb "mocker/protocols/demo"
 
 	"google.golang.org/protobuf/encoding/protojson"
 
@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	address = "g111-5646.mock.testing.ifbook.woa.com:8080"
+	address = "localhost:50052"
 )
 
 func main() {
