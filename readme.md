@@ -18,5 +18,11 @@ go run .
 go run client/client.go
 ```
 
+# 3. 运行 grpc proxy 代码
+
+```bash
+go run proxy2023/proxy.go
+```
+
 - mocker 服务端实现动态类型 mocker
 - 不用每次生成桩代码，提高灵活性
